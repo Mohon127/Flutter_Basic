@@ -1,125 +1,176 @@
 import 'package:flutter/material.dart';
 
+// TODO: Embedded List
+class GoogleProducts {
+  final List<String> items = [
+    'Cloud Functions',
+    'App Engine',
+    'Kubernetes Engine',
+    'Compute Engine',
+    'Bare Metal',
+    'Preemptible VMs',
+    'Shielded VMs',
+    'Sole-tenet Nodes',
+    'VMWare Engine',
+    'Cloud Firestore',
+    'Cloud Storage',
+    'Persistent Disk',
+    'Local SSD',
+    'Cloud Bigtable',
+    'Cloud Firestore',
+    'Cloud Memorystore',
+    'Cloud Spanner',
+  ];
+}
+
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter is awesome!'),
+    const title = 'Google Products';
+    return const MaterialApp(
+      title: title,
+      debugShowCheckedModeBanner: false,
+      home: ProductHomeWidget(title),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+// TODO: ProductHomeWidget
+class ProductHomeWidget extends StatelessWidget {
   final String title;
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  const ProductHomeWidget(this.title, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+       backgroundColor: Colors.white,
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+         backgroundColor: Colors.blue,
+         elevation: 0,
+        // TODO: Enable AppBarLeading
+         leading: const AppBarLeading(),
+
+        actions: const [
+          AppBarActionsShare(),
+        ],
+        title: Text(title, style: const TextStyle(color: Colors.black)),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+       body: ProductListView(),
+    );
+  }
+}
+
+// TODO: AppBarLeading
+class AppBarLeading extends StatelessWidget {
+  const AppBarLeading({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const IconButton(
+      icon: Icon(
+        Icons.menu,
+      ),
+      onPressed: null,
+    );
+  }
+}
+
+// TODO: AppBarActionsShare
+class AppBarActionsShare extends StatelessWidget {
+  const AppBarActionsShare({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        icon: const Icon(
+          Icons.share,
         ),
+        onPressed: () {
+          const snackBar =
+          SnackBar(content: Text('You selected the Share Action'));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        });
+  }
+}
+
+// TODO: ProductListView
+class ProductListView extends StatelessWidget {
+  final googleProducts = GoogleProducts();
+
+  ProductListView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: googleProducts.items.length,
+      itemBuilder: (context, index) {
+        return ProductListTile(googleProducts.items[index]);
+      },
+    );
+  }
+}
+
+// TODO: ProductListTile
+class ProductListTile extends StatelessWidget {
+  final String? productLabel;
+
+  const ProductListTile(this.productLabel, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text('$productLabel', style: const TextStyle(color: Colors.black)),
+      subtitle: const Text('SubTitle', style: TextStyle(color: Colors.black)),
+      leading: const Icon(Icons.help_center_outlined, color: Colors.black),
+      // When the child is tapped, show a snackbar.
+      onTap: () {
+        // TODO: Enable onTap
+         final snackBar = SnackBar(content: Text('You selected $productLabel'));
+         ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+        // TODO: Navigation to the Details Page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MyDetails()),
+        );
+      },
+    );
+  }
+}
+
+// TODO: Add a details page
+class MyDetails extends StatelessWidget {
+  const MyDetails({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    const title = 'Details Page';
+
+    return Scaffold(
+      // backgroundColor: Colors.white,
+      appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: Colors.grey, //change your color here
+        ),
+        backgroundColor: Colors.blue,
+        elevation: 0,
+        // leading: const AppBarLeading(),
+        actions: const [
+          AppBarActionsShare(),
+        ],
+        title: const Text(title, style: TextStyle(color: Colors.black)),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // appBar: AppBar(
+      //   title: const Text(title),
+      // ),
+      body: const Center(
+        child: Text('Hello Details Page')),
     );
   }
 }
